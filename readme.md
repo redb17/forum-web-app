@@ -1,6 +1,6 @@
 ## General discussion forum for posting questions, answers and comments. 
-#### *A user need to create an account with ID and password. 
-#### *This app uses mongodb database stored at my mLab account. To change the database to any other mongoDb database, change the url in line 14 in app.js.
+#### * A user need to create an account with ID and password. 
+#### * This app uses mongodb database stored at my mLab account. To change the database to any other mongoDb database, change the url in line 14 in app.js.
 ## Features
 
 * Register new users.
