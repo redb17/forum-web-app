@@ -1,9 +1,6 @@
-# General discussion forum for posting questions, answers and comments.
-
-## Getting Started
-
-Execute command "npm install" to install all dependencies then "node app.js" to start the app.
-
+## General discussion forum for posting questions, answers and comments. 
+#### *A user need to create an account with ID and password. 
+#### *This app uses mongodb database stored at my mLab account. To change the database to any other mongoDb database, change the url in line 14 in app.js.
 ## Features
 
 * Register new users.
@@ -27,6 +24,12 @@ Execute command "npm install" to install all dependencies then "node app.js" to 
 * Questions/answers/comments are editable.
 * Users can search for questions based on multiple tags.
 * Profile of every user showing his Karma Points and other data.
+
+## Getting Started
+
+Execute command "npm install" to install all dependencies then "node app.js" to start the app.
+
+
 
 ## Acknowledgments
 
