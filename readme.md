@@ -1,10 +1,10 @@
 ## General discussion forum for posting questions, answers and comments. 
 * #### A user need to create an account with ID and password. 
+* #### This app uses mongoDb, nodeJs, javaScript, handleBars and a mongoDb online database(mLab).
 * #### This app uses mongodb database stored at my mLab account. To change the database to any other mongoDb database, change the url in line 14 in app.js.
+* #### (A few example questions/answers/comments and users have already been added.)
 
 ## Features
-
-
 * ####  Register new users.
 * ####  Login using username and password.
 * ####  Post questions/answers/comments.
@@ -28,12 +28,8 @@
 * ####  Profile of every user showing his Karma Points and other relevant data.
 
 ## How to use(in windows)?
-
 * #### Execute command "npm install" to install all dependencies stored in package.json file.
 * #### Open terminal and type 'node app.js' to start the app on local port(most probably http://127.0.0.1:3000).
 
-
-
 ## Acknowledgments
-
-* Login and Registration by bCrypt and Passport - https://github.com/bradtraversy/loginapp
+* #### Login and registration system using bCrypt and passport : 'https://github.com/bradtraversy/loginapp'.
