@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h2 style="text-align : center; font-weight : bold; text-decoration : underline;" class="page-header">Notifications</h2>
+
+    <ul>
+      {{#each nots}}
+        <li style="background-color: lightyellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" ><p style="font-weight: bold;" >{{{notMsg}}}</p></li>
+      {{/each}}
+    </ul>
+  </body>
+</html>

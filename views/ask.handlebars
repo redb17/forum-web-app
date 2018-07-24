@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body style="background-color: lightblue;" >
+    <h2 style="text-align : center; font-weight : bold; text-decoration : underline;" class="page-header">ASK A QUESTION</h2>
+    <form  onsubmit="return chk()" style="background-color: lightyellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" method="post" action="/questions/ask">
+      <div class="row">
+
+        <div class="col-sm-6">
+            <label style="text-align : center;" >Question Title</label><br>
+            <textarea rows="8" cols="60" name="qTitle" placeholder="Title"></textarea>
+        </div>
+
+        <div class="col-sm-6">
+            <label style="text-align : center;" >Question Body</label><br>
+            <textarea rows="8" cols="60" name="qBody" placeholder="Enter your question"></textarea>
+        </div>
+        <div class="col-sm-6">
+            <label style="text-align : center;" >Select Tag(s)</label><br>
+            <select name="qTags" multiple size="8" style="width: 440px;">
+            {{#each allTags}}
+              <option value="{{tag}}">{{tag}}</option>
+              {{/each}}<br><br>
+            </select><br><br>
+        </div>
+        <div class="col-sm-6">
+          <label style="text-align : center;" >Enter New Tag(s)</label><br>
+              <textarea rows="7" cols="60" name="qNewTags" placeholder="Enter new tags separated by spaces (use underscore for any space in a any tag)"></textarea>
+              <br><br>
+        </div>
+          <div class="col-sm-4 col-sm-offset-5">
+            <button style="font-weight : bold; min-width: 100px;" type="submit" class="btn btn-default btn-large">SUBMIT</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+    <script type="text/javascript">
+
+      function chk()
+      {
+        var qTitleEle = document.getElementsByTagName('textarea')[0];
+        var qBodyEle = document.getElementsByTagName('textarea')[1];
+
+        var selectEle = document.getElementsByTagName('select')[0];
+        var result = [];
+        for(i=0;i<selectEle.length;i++){
+          if(selectEle[i].selected){
+            result.push(selectEle.value);
+          }
+        }
+        var textareaEle = document.getElementsByTagName('textarea')[2];
+        if(qTitleEle.value.length == 0)
+        {
+          alert("You have not specified any title!");
+          return false;
+        }
+        else if(qBodyEle.value.length == 0)
+        {
+          alert("You have not specified any question body!");
+          return false;
+        }
+        else if(textareaEle.value.length == 0 && result.length == 0)
+        {
+          alert("You have not specified any tag(s)!");
+          return false;
+        }
+        return true;
+      }
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body onload="chk()" style="background-color: lightblue;">
+    <h2 style="text-align : center; font-weight : bold; text-decoration : underline;" class="page-header">ADMIN CONTROLS</h2>
+
+        <div id="adminControls" style="display : none; background-color: lightyellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" class="row">
+<div style=" color: darkgreen;" class="col-sm-4">
+          <form  method="post" action="/adminReward">
+
+              <h3 style="font-weight : bold; text-decoration : underline;" class="page-header">REWARD POINTS</h3>
+                <label style="text-align : center;" >SELECT USERNAME : </label>
+                <input type="text" name="rewUser" id="search" class="form-control" value="" placeholder="search">
+                <ul id="result" class="list-group">
+                </ul>
+                <input style="color: darkgreen; max-width : 400px;" type="text" class="form-control" name="rewPoints" placeholder="Enter points to be rewarded">
+                <br>
+            <div class="col-sm-4 col-sm-offset-5">
+              <button style="font-weight : bold; min-width: 100px;" type="submit" class="btn btn-default btn-large">SUBMIT</button>
+            </div>
+          </form>
+          </div>
+          <div style=" color: darkred;" class="col-sm-4">
+          <form  method="post" action="/adminDeduct">
+
+
+            <h3 style="font-weight : bold; text-decoration : underline;" class="page-header">DEDUCT POINTS</h3>
+                <label style="text-align : center;" >SELECT USERNAME : </label>
+                <input type="text" name="dedUser" id="search2" class="form-control" value="" placeholder="search">
+                <ul id="result2" class="list-group">
+                </ul>
+              <input style="color: darkred; max-width : 400px;" type="text" class="form-control" name="dedPoints" placeholder="Enter points to be deducted">
+              <br>
+
+          <div class="col-sm-4 col-sm-offset-5">
+            <button style="font-weight : bold; min-width: 100px;" type="submit" class="btn btn-default btn-large">SUBMIT</button>
+          </div>
+        </form>
+        </div>
+        <div style=" color: darkblue;" class="col-sm-4">
+        <form  method="post" action="/adminChange">
+
+            <h3 style="font-weight : bold; text-decoration : underline;" class="page-header">CHANGE ADMIN</h3>
+                <label style="text-align : center;" >SELECT USERNAME : </label>
+                <input type="text" name="newAdmin" id="search3" class="form-control" value="" placeholder="search">
+                <ul id="result3" class="list-group">
+                </ul>
+
+          <div class="col-sm-4 col-sm-offset-5">
+            <button style="font-weight : bold; min-width: 100px;" type="submit" class="btn btn-default btn-large">SUBMIT</button>
+          </div>
+</form>
+  </div>
+    </div>
+
+      <h2 id="notAdmin" style="display : none; color: darkred; text-align : center; font-weight : bold; text-decoration : underline;"><br><br>You are not Admin. <br><br>Current Admin is <a href="/accounts/{{currAdmin}}">{{currAdmin}}</a>.</h2>
+      <h2 id="currAdmin" style="display : none; color: darkred; text-align : center; font-weight : bold; text-decoration : underline;">{{currAdmin}}</h2>
+      <h2 id="currUser" style="display : none; color: darkred; text-align : center; font-weight : bold; text-decoration : underline;">{{user.username}}</h2>
+
+    <script type="text/javascript">
+
+        function chk()
+        {
+          var notAdmin = document.getElementById('notAdmin').innerHTML;
+          var currAdmin = document.getElementById('currAdmin').innerHTML;
+          var currUser = document.getElementById('currUser').innerHTML;
+          if( currUser == currAdmin )
+          {
+            document.getElementById('adminControls').style.display = "block";
+          }
+          else
+          {
+            document.getElementById('notAdmin').style.display = "block";
+          }
+        };
+
+        var userList = {};
+        userList = {{{json allUsers}}};
+        var usernameList = [];
+        for( i = 0 ; i < userList.length ; i++ )
+        {
+          usernameList.push( userList[i].username );
+        }
+
+        $('document').ready(function(){
+          $('#search').keyup(function(){
+            $('#result').html('');
+            var searchField = $('#search').val();
+            var expression = new RegExp(searchField, "i");
+
+            if(searchField.length > 0)
+            {
+              $.each(usernameList, function(key, v){
+
+                if( v.search(expression) != -1 )
+                {
+                  $('#result').append('<li id="'+v+'" class="itm list-group-item">' + v + '</li>');
+                }
+              });
+            }
+          });
+
+          $('#search2').keyup(function(){
+
+            $('#result2').html('');
+
+            var searchField = $('#search2').val();
+            var expression = new RegExp(searchField, "i");
+
+            if(searchField.length > 0)
+            {
+              $.each(usernameList, function(key, v){
+                if( v.search(expression) != -1 )
+                {
+                  $('#result2').append('<li id="'+v+'" class="itm list-group-item">' + v + '</li>');
+                }
+              });
+            }
+          });
+
+          $('#search3').keyup(function(){
+
+            $('#result3').html('');
+
+            var searchField = $('#search3').val();
+            var expression = new RegExp(searchField, "i");
+            if(searchField.length > 0)
+            {
+              $.each(usernameList, function(key, v){
+
+                if( v.search(expression) != -1 )
+                {
+                  $('#result3').append('<li id="'+v+'" class="itm list-group-item">' + v + '</li>');
+                }
+              });
+            }
+          });
+        });
+
+    </script>
+  </body>
+</html>

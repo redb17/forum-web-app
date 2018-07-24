@@ -1,0 +1,22 @@
+
+    <h2 style="text-align : center; font-weight : bold; text-decoration : underline;" class="page-header">Search Results</h2>
+    <ul>
+      {{#each allQues}}
+        <li style="background-color: lightyellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" >
+          <p style="display : inline; font-weight: bold;" >
+            Title : <a href="/partQues/{{qStampId}}"><button style="display : inline; width: auto;" type="submit" class="btn btn-default btn-large">{{qTitle}}</button></a><br>
+          Question : <p>{{qBody}}</p>
+          <div style="color : darkgreen;"><b>Upvotes :</b> {{qUpBy.length}}</div>
+          <div style="color : darkred;"><b>Downvotes :</b> {{qDownBy.length}}</div>
+          <div style="color : darkblue;"><b>Asked By :</b> <a href="/accounts/{{askedBy}}"><button style="display : inline;  width: auto;" type="submit" class="btn btn-default btn-large">{{askedBy}}</button></a></div><br>
+          <b>TAGS :-</b> &nbsp;
+          {{#each tags}}
+          <form style="display : inline;" class="" action="/search" method="post">
+            <input type="text" name="qTags" value="{{this}}" style="display:none;">
+            <button style="display : inline; width: auto;" type="submit" class="btn btn-default btn-large">{{this}}</button>
+          </form>
+          {{/each}}
+        </p>
+      </li>
+      {{/each}}
+    </ul>

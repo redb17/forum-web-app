@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1 id="userData" style="display:none;">{{user.username}}</h1>
+    <h1 id="isAdmin" style="display:none;">{{user.isAdmin}}</h1>
+    <h2 style="text-align : center; font-weight : bold; text-decoration : underline;" class="page-header">Question</h2>
+    <ul>
+        <li style="background-color: lightyellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" >
+          <p style="display : inline; font-weight: bold;" >
+            Title : <a href="/partQues/{{qStampId}}"><button style="display : inline; width: auto;" type="submit" class="btn btn-default btn-large">{{qTitle}}</button></a><br>
+          Question : <p>{{qBody}}</p>
+          <div style="color : darkgreen;"><b>Upvotes :</b> {{qUpBy.length}}</div>
+          <div style="color : darkred;"><b>Downvotes :</b> {{qDownBy.length}}</div>
+          <div id="qAskedBy1" style="color : darkred; display: none;">{{askedBy}}</div>
+          <div  style="color : darkblue;"><b>Asked By :</b> <a href="/accounts/{{askedBy}}"><button  style="display : inline;  width: auto;" type="submit" class="btn btn-default btn-large">{{askedBy}}</button></a></div><br>
+          <b>TAGS :-</b> &nbsp;
+          {{#each tags}}
+              <form style="display : inline;" class="" action="/search" method="post">
+                <input type="text" name="qTags" value="{{this}}" style="display:none;">
+                <button style="display : inline; width: auto;" type="submit" class="btn btn-default btn-large">{{this}}</button>
+              </form>
+          {{/each}}
+          <br><br>
+          <div>
+            <button id="showComments" style="font-weight : bold; width: auto; background-color: lightgreen;" type="submit" class="btn btn-default btn-large">Show Comments</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="showAnswers" style="font-weight : bold; width: auto; background-color: orange;" type="submit" class="btn btn-default btn-large">Show Answers</button>
+            <form id="upvoteQues" class="" action="/questions/quesUp" method="post" style="display:inline;">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{qTitle}}" style="">
+                <input type="text" name="qStampId" value="{{qStampId}}" style="">
+                <input type="text" name="askedBy" value="{{askedBy}}" style="display:none;">
+              </div>
+              <button id="upvoteQues" style="font-weight : bold; width: auto; background-color: green;" type="submit" class="btn btn-default btn-large">Upvote</button>
+            </form>
+            <form id="undoUpvoteQues" class="" action="/questions/quesUnUp" method="post" style="display:none;">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{qTitle}}" style="">
+                <input type="text" name="qStampId" value="{{qStampId}}" style="">
+                <input type="text" name="askedBy" value="{{askedBy}}" style="display:none;">
+              </div>
+              <button  style="font-weight : bold; width: auto; background-color: green;" type="submit" class="btn btn-default btn-large">Undo Upvote</button>
+            </form>
+            <form  id="downvoteQues" class="" action="/questions/quesDown" method="post" style="display:inline;">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{qTitle}}" style="display:none;">
+                <input type="text" name="qStampId" value="{{qStampId}}" style="">
+                <input type="text" id="quesAskedBy" name="askedBy" value="{{askedBy}}" style="display:none;">
+              </div>
+              <button style="font-weight : bold; width: auto; background-color: red;" type="submit" class="btn btn-default btn-large">Downvote</button>
+            </form>
+            <form id="undoDownvoteQues" class="" action="/questions/quesUnDown" method="post" style="display:none;">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{qTitle}}" style="">
+                <input type="text" name="qStampId" value="{{qStampId}}" style="">
+                <input type="text" name="askedBy" value="{{askedBy}}" style="display:none;">
+              </div>
+              <button  style="font-weight : bold; width: auto; background-color: red;" type="submit" class="btn btn-default btn-large">Undo Downvote</button>
+            </form>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="ansQuesB" style="font-weight : bold; width: auto;" type="submit" class="btn btn-default btn-large">Answer</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="commQuesB" style="font-weight : bold; width: auto;" type="submit" class="btn btn-default btn-large">Comment</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="quesEditButton" style="font-weight : bold; width: auto;" type="submit" class="btn btn-default btn-large">Edit</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <form onsubmit="return chkQuesRem()" class="" action="/questions/remQ" method="post" style="display:inline;">
+
+                <textarea name="qTitle" rows="8" cols="4" style="display:none;">{{qTitle}}</textarea>
+                <input type="text" name="qStampId" value="{{qStampId}}" style="display:none;">
+              <button id="remQues" style="font-weight: bold; width: auto;" type="submit" class="btn btn-default btn-large">Delete</button>
+            </form>
+          </div>
+        </p>
+      </li>
+      <div class="col-sm-6" id="quesEditForm" style="background-color: yellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px; display:none;">
+          <form onsubmit="return chkQuesEdit()" class="" action="/questions/editQ" method="post" style="display:inline;">
+              <textarea id="quesEditBody" rows="4" cols="142" name="qBody" >{{qBody}}</textarea>
+              <input type="text" name="qStampId" value="{{qStampId}}" style="display:none;">
+              <textarea name="qTitle" rows="8" cols="4" style="display:none;">{{qTitle}}</textarea>
+            <button id="saveEditQues" style="font-weight   : bold; width: auto;" type="submit" class="btn btn-default btn-large">Save</button>
+            <button id="cancelEditQues" style="font-weight : bold; width: auto;" type="button" class="btn btn-default btn-large">Cancel</button>
+          </form>
+      </div>
+      <div class="col-sm-6" id="ansForm" style="background-color: lightgreen; width: auto; border: 2px solid black; padding: 20px; margin: 20px; display:none;">
+          <form onsubmit="return chkAns()" class="" action="/questions/ans" method="post" style="display:inline;">
+            <input type="text" name="qStampId" value="{{qStampId}}" style="display:none;">
+              <input type="text" name="qTitle" value="{{qTitle}}" style="display:none;">
+              <input type="text" id="qById" name="askedBy" value="{{askedBy}}" style="display:none;">
+              <textarea id="ansW" name="qAnsBody" rows="8" cols="142" ></textarea><br>
+            <button id="postAnsB" style="font-weight : bold; width: auto;" type="submit" class="btn btn-default btn-large">Post Answer</button>
+          </form>
+      </div>
+      <div class="col-sm-6" id="commentForm" style="background-color: lightgreen; width: auto; border: 2px solid black; padding: 20px; margin: 20px; display:none;">
+          <form onsubmit="return chkComm()" class="" action="/questions/comm" method="post" style="display:inline;">
+              <input type="text" name="qStampId" value="{{qStampId}}" style="display:none;">
+              <input type="text" name="qTitle" value="{{qTitle}}" style="display:none;">
+              <input type="text" name="askedBy" value="{{askedBy}}" style="display:none;">
+              <textarea id="commW" name="qCommBody" rows="8" cols="142" ></textarea><br>
+            <button id="postCommB" style="font-weight : bold; width: auto;" type="submit" class="btn btn-default btn-large">Post Comment</button>
+          </form>
+      </div>
+      <div class="" id="comments" style="display:none;">
+        {{#each qComm}}
+        <li style="background-color: lightgreen; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" >
+          <p style="display : inline; font-weight: bold;" >
+          Comment : <p>{{qCommBody}}</p>
+          <div style="color : darkgreen;"><b>Upvotes :</b> {{qCommUpBy.length}}</div>
+          <div style="color : darkred;"><b>Downvotes :</b> {{qCommDownBy.length}}</div>
+          <div style="color : darkblue;"><b>Commented By :</b> <a href="/accounts/{{qCommBy}}"><button style="display : inline;  width: auto;" type="submit" class="btn btn-default btn-large">{{qCommBy}}</button></a></div><br>
+          <br><br>
+          <div>
+          <form class="" action="/questions/commUp" method="post" style="display:inline;">
+            <div style="display : none;" class="col-sm-6">
+              <input type="text" name="qTitle" value="{{../qTitle}}" style="">
+              <input type="text" name="qStampId" value="{{../qStampId}}" style="">
+              <input type="text" name="qCommBody" value="{{qCommBody}}" style="">
+              <input type="text" name="qCommBy" value="{{qCommBy}}" style="display:none;">
+              <input type="text" name="qCommStampId" value="{{qCommStampId}}" style="display:none;">
+            </div>
+            <button style="font-weight : bold; width: auto; background-color: green;" type="submit" class="btn btn-default btn-large">Upvote</button>
+          </form>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <form class="" action="/questions/commDown" method="post" style="display:inline;">
+            <div style="display : none;" class="col-sm-6">
+              <input type="text" name="qTitle" value="{{../qTitle}}" style="">
+              <input type="text" name="qCommBody" value="{{qCommBody}}" style="">
+              <input type="text" name="qStampId" value="{{../qStampId}}" style="">
+              <input type="text" name="qCommBy" value="{{qCommBy}}" style="display:none;">
+              <input type="text" name="qCommStampId" value="{{qCommStampId}}" style="display:none;">
+            </div>
+            <button style="font-weight : bold; width: auto; background-color: red;" type="submit" class="btn btn-default btn-large">Downvote</button>
+          </form>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <button  style="font-weight : bold; width: auto; " type="{{qCommBy}}" value="{{qCommStampId}}" class="commEditButton btn btn-default btn-large">Edit</button>
+        </div>
+        </p>
+        <div class="col-sm-6" id="{{qCommStampId}}" style="background-color: yellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px; display:none;">
+            <form id="f{{qCommStampId}}" onsubmit="return chkCommEdit()" class="" action="/questions/editC" method="post" style="display:inline;">
+                <textarea id="b{{qCommStampId}}" rows="4" cols="142" name="qCommBody" >{{qCommBody}}</textarea>
+                <textarea name="qTitle" rows="8" cols="4" style="display:none;">{{../qTitle}}</textarea>
+                <input type="text" name="qStampId" value="{{../qStampId}}" style="display:none;">
+                <textarea name="qCommStampId" rows="8" cols="4" style="display:none;">{{qCommStampId}}</textarea>
+              <button id="s{{qCommStampId}}" value="b{{qCommStampId}}" style="font-weight   : bold; width: auto;" type="submit" class="commSaveB btn btn-default btn-large">Save</button>
+              <button id="c{{qCommStampId}}" value="#{{qCommStampId}}" style="font-weight : bold; width: auto;" type="button" class="commCancelB btn btn-default btn-large">Cancel</button>
+            </form>
+        </div>
+      </li>
+      {{/each}}
+      </div>
+      <div class="" id="answers" style="display:none;">
+        {{#each qAns}}
+        <li style="background-color: orange; width: auto; border: 2px solid black; padding: 20px; margin: 20px;" >
+          <p style="display : inline; font-weight: bold;" >
+            {{#if isAccepted}}
+            <div style="color : darkgreen;"><b>ACCEPTED</b></div>
+            {{/if}}
+          Answer : <p>{{qAnsBody}}</p>
+          <div style="color : darkgreen;"><b>Upvotes :</b> {{qAnsUpBy.length}}</div>
+          <div style="color : darkred;"><b>Downvotes :</b> {{qAnsDownBy.length}}</div>
+          <div style="color : darkblue;"><b>Answered By :</b> <a href="/accounts/{{qAnsBy}}"><button style="display : inline;  width: auto;" type="submit" class="btn btn-default btn-large">{{qAnsBy}}</button></a></div><br>
+          <br><br>
+          <div>
+            {{#if isAccepted}}
+            {{else}}
+            <form id="ansAccept{{qAnsStampId}}" value="{{../askedBy}}" class="ansAccept" action="/questions/ansAcc" method="post" style="display:none;">
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{../qTitle}}" style="">
+                <input type="text" name="askedBy" value="{{../askedBy}}" style="">
+                <input type="text" name="qStampId" value="{{../qStampId}}" style="display:none;">
+                <input type="text" name="qAnsBody" value="{{qAnsBody}}" style="">
+                <input type="text" name="qAnsBy" value="{{qAnsBy}}" style="display:none;">
+                <input type="text" name="qAnsStampId" value="{{qAnsStampId}}" style="">
+              </div>
+              <button style="font-weight : bold; width: auto; background-color: cyan;" type="submit" class="btn btn-default btn-large">Accept Answer</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </form>
+            {{/if}}
+<!-- upvoting answer to question-->
+            <form class="" action="/questions/ansUp" method="post" style="display:inline;">
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{../qTitle}}" style="">
+                <input type="text" name="qStampId" value="{{../qStampId}}" style="display:none;">
+                <input type="text" name="qAnsBody" value="{{qAnsBody}}" style="">
+                <input type="text" name="qAnsBy" value="{{qAnsBy}}" style="display:none;">
+                <input type="text" name="qAnsStampId" value="{{qAnsStampId}}" style="">
+              </div>
+              <button style="font-weight : bold; width: auto; background-color: green;" type="submit" class="btn btn-default btn-large">Upvote</button>
+            </form>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <form class="" action="/questions/ansDown" method="post" style="display:inline;">
+              <div style="display : none;" class="col-sm-6">
+                <input type="text" name="qTitle" value="{{../qTitle}}" style="">
+                <input type="text" name="qAnsBody" value="{{qAnsBody}}" style="">
+                <input type="text" name="qStampId" value="{{../qStampId}}" style="display:none;">
+                <input type="text" name="qAnsBy" value="{{qAnsBy}}" style="display:none;">
+                <input type="text" name="qAnsStampId" value="{{qAnsStampId}}" style="">
+              </div>
+              <button style="font-weight : bold; width: auto; background-color: red;" type="submit" class="btn btn-default btn-large">Downvote</button>
+            </form>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <button  style="font-weight : bold; width: auto; " type="{{qAnsBy}}" value="{{qAnsStampId}}" class="ansEditButton btn btn-default btn-large">Edit</button>
+            <div class="col-sm-6" id="{{qAnsStampId}}" style="background-color: yellow; width: auto; border: 2px solid black; padding: 20px; margin: 20px; display:none;">
+                <form id="f{{qAnsStampId}}" onsubmit="return chkCommEdit()" class="" action="/questions/editA" method="post" style="display:inline;">
+                    <textarea id="b{{qAnsStampId}}" rows="4" cols="142" name="qAnsBody" >{{qAnsBody}}</textarea>
+                    <textarea name="qStampId" rows="8" cols="4" style="display:none;">{{../qStampId}}</textarea>
+                    <textarea name="qTitle" rows="8" cols="4" style="display:none;">{{../qTitle}}</textarea>
+                    <textarea name="qAnsStampId" rows="8" cols="4" style="display:none;">{{qAnsStampId}}</textarea>
+                  <button id="s{{qAnsStampId}}" value="b{{qAnsStampId}}" style="font-weight   : bold; width: auto;" type="submit" class="ansSaveB btn btn-default btn-large">Save</button>
+                  <button id="c{{qAnsStampId}}" value="#{{qAnsStampId}}" style="font-weight : bold; width: auto;" type="button" class="ansCancelB btn btn-default btn-large">Cancel</button>
+                </form>
+            </div>
+          </div>
+        </p>
+      </li>
+      {{/each}}
+      </div>
+    </ul>
+    <script type="text/javascript">
+
+        function chkComm()
+        {
+            if( $("#commW").val().length == 0 )
+            {
+              alert("You have written no comment!");
+              return false;
+            }
+            else
+            {
+              return true;
+            }
+
+        }
+
+        function chkAns()
+        {
+            if( $("#ansW").val().length == 0 )
+            {
+              alert("You have written no answer!");
+              return false;
+            }
+            else
+            {
+              return true;
+            }
+        }
+
+        function chkQuesEdit()
+        {
+          if( $("#quesEditBody").val().length == 0 )
+          {
+            alert("You have written no updated question!");
+            return false;
+          }
+          else
+          {
+            return true;
+          }
+        }
+
+        function chkQuesRem()
+        {
+          if( $("#userData").html().length == 0 )
+          {
+            alert("You need to be logged in to delete!");
+            return false;
+          }
+          else if( $("#userData").html() == $("#qAskedBy1").html() || $("#isAdmin").html() == "true" )
+          {
+            return true;
+          }
+          else
+          {
+            alert("You cannot remove someone else's question!");
+            return false;
+          }
+        }
+
+        function chkCommRem()
+        {
+          if( $("#userData").html().length == 0 )
+          {
+            alert("You need to be logged in to delete!");
+            return false;
+          }
+          else
+          {
+            return true;
+          }
+        }
+
+        $(document).ready(function()
+        {
+          var currUser = {{{json user.username}}};
+          var qUpBy = {{{json qUpBy}}};
+          var qDownBy = {{{json qDownBy}}};
+          for(i=0;i<qUpBy.length;i++)
+          {
+            if(qUpBy[i] == currUser)
+            {
+              $("#upvoteQues").css("display", "none");
+              $("#undoUpvoteQues").css("display", "inline");
+            }
+          }
+          for(i=0;i<qDownBy.length;i++)
+          {
+            if(qDownBy[i] == currUser)
+            {
+              $("#downvoteQues").css("display", "none");
+              $("#undoDownvoteQues").css("display", "inline");
+            }
+          }
+         $("#commQuesB").click(function()
+         {
+           if( $("#userData").html().length == 0 )
+           {
+             alert("You need to be logged in to comment!");
+           }
+           else
+           {
+             $("#commentForm").slideToggle();
+           }
+         });
+
+         $("#ansQuesB").click(function()
+         {
+           if( $("#userData").html().length == 0 )
+           {
+             alert("You need to be logged in to answer!");
+           }
+           else if( ($("#userData").html()) == ($("#qById").val()) )
+           {
+             alert("You cannot answer your own question!");
+           }
+           else
+           {
+             $("#ansForm").slideToggle();
+           }
+         });
+
+         $("#quesEditButton").click(function()
+         {
+           if( $("#userData").html().length == 0 )
+           {
+             alert("You need to be logged in to edit!");
+           }
+           else if( $("#userData").html() == $("#quesAskedBy").val() || $("#isAdmin").html() == "true" )
+           {
+             $("#quesEditForm").slideToggle();
+           }
+           else
+           {
+             alert("You cannot edit someone else's question!");
+           }
+         });
+
+         $("#cancelEditQues").click(function()
+         {
+           $("#quesEditForm").slideToggle();
+         });
+
+         $(".commEditButton").click(function()
+         {
+            var qCommBy1 = $(this).attr("type");
+            var qCommStampId1 = "#"+ $(this).attr("value");
+            if( $("#userData").html().length == 0 )
+            {
+              alert("You need to be logged in to edit!");
+            }
+            else if( $("#userData").html() == qCommBy1 || $("#isAdmin").html() == "true" )
+            {
+              $(qCommStampId1).slideToggle();
+            }
+            else
+            {
+              alert("You cannot edit someone else's comment!");
+            }
+          });
+
+          $(".ansAccept").each(function(){
+            if($("#"+$(this).attr("id")).attr("value") == currUser)
+            {
+              $("#"+$(this).attr("id")).css("display", "inline");
+            }
+          });
+
+          $(".commCancelB").click(function()
+          {
+            $($(this).attr("value")).slideToggle();
+           });
+
+           $(".ansEditButton").click(function()
+           {
+              var qAnsBy1 = $(this).attr("type");
+              var qAnsStampId1 = "#"+ $(this).attr("value");
+              if( $("#userData").html().length == 0 )
+              {
+                alert("You need to be logged in to edit!");
+              }
+              else if( $("#userData").html() == qAnsBy1 || $("#isAdmin").html() == "true" )
+              {
+                $(qAnsStampId1).slideToggle();
+              }
+              else
+              {
+                alert("You cannot edit someone else's answer!");
+              }
+            });
+
+            $(".ansCancelB").click(function()
+            {
+              $($(this).attr("value")).slideToggle();
+             });
+
+          var showComments = $("#showComments");
+          var comments = $("#comments");
+          var showAnswers = $("#showAnswers");
+          var answers = $("#answers");
+
+          showComments.click(function()
+          {
+            if( showComments.html() == "Show Comments")
+            {
+              showAnswers.html("Show Answers");
+              answers.hide();
+              showComments.html("Hide Comments");
+            }
+            else
+            {
+              showComments.html("Show Comments");
+            }
+            comments.slideToggle();
+          });
+
+          showAnswers.click(function()
+          {
+            if( showAnswers.html() == "Show Answers")
+            {
+              showComments.html("Show Comments");
+              comments.hide();
+              showAnswers.html("Hide Answers");
+            }
+            else
+            {
+              showAnswers.html("Show Answers");
+            }
+            answers.slideToggle();
+          });
+        });
+    </script>
+  </body>
+</html>
