@@ -11,16 +11,16 @@
 * ####  Upvote/downvote questions/answers/comments.
 * ####  Tag users using "@" symbol, example @redb17. That user will be notified.
 * ####  Notifications regarding different activities like upvoting/downvoting a user's answer/question/comment, etc.
-* ####  A user gets notified for:
-* ####  Mentioned on a question/answer/comment.
-* ####  A new answer has been posted on a user's question
-* ####  User's question/answer/comment has been upvoted/downvoted.
-* ####  Have been awarded/deducted points by Admin.
-* ####  Have been made Admin by last Admin.
-* ####  Karma points system
-* ####  +10 points of each upvote of an answer/question.
-* ####  -2 for downvote of an answer/question.
-* ####  Comments upvote/downvote offer no points.
+* ####  A user gets notified for :
+* ####  > Mentioned on a question/answer/comment.
+* ####  > A new answer has been posted on a user's question
+* ####  > User's question/answer/comment has been upvoted/downvoted.
+* ####  > Have been awarded/deducted points by Admin.
+* ####  > Have been made Admin by last Admin.
+* ####  Karma points system :
+* ####  > +10 points of each upvote of an answer/question.
+* ####  > -2 for downvote of an answer/question.
+* ####  > Comments upvote/downvote offer no points.
 * ####  Upvote/downvote can be changed afterwards by a user. An upvote can be 'un-upvoted' afterwards, etc.
 * ####  Question author can “accept answer” on his question. This will award 20 points to author of that answer.
 * ####  Questions/answers/comments are editable.
