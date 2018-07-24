@@ -1,6 +1,4 @@
-# Project Title
-
-Discussion forum for posting questions and answers.
+# General discussion forum for posting questions, answers and comments.
 
 ## Getting Started
 
